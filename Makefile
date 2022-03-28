@@ -13,8 +13,11 @@
 NAME		=		pipex
 
 ###FILES
-SRC			=		pipex.c 		main.c\
+##SRC			=		pipex.c 		main.c\
 					split.c			utils.c
+
+SRC			=		pipex_bonus.c 		main_bonus.c\
+					split_bonus.c			utils_bonus.c
 
 OBJ			= 		$(SRC:.c=.o)
 

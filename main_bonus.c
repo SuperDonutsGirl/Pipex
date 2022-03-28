@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pamartin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/28 16:36:18 by pamartin          #+#    #+#             */
-/*   Updated: 2022/03/28 16:36:20 by pamartin         ###   ########.fr       */
+/*   Created: 2022/03/28 18:28:37 by pamartin          #+#    #+#             */
+/*   Updated: 2022/03/28 18:28:38 by pamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 void	msg_error(void)
 {
@@ -24,29 +24,18 @@ void	protect(int check)
 		msg_error();
 }
 
-void	close_fd(int pipe_fd, int file_fd)
+int	main(int argc, char**argv, char **envp)
 {
-	close(pipe_fd);
-	close(file_fd);
-}
+	int	fd_file[2];
+	int	check;
+	int	i;
 
-int	main(int argc, char **argv, char **envp)
-{
-	int		fd_file1;
-	int		fd_file2;
-	int		check;
-
-	if (argc != 5)
-		return (ft_putstr_fd("Error : you must have 4 arguments\n", 2));
-	fd_file1 = open(argv[1], O_RDONLY);
-	fd_file2 = open(argv[4], O_CREAT | O_RDWR, 0644);
-	if (fd_file1 < 0 || fd_file2 < 0)
+	if (argc < 5)
+		return (ft_putstr_fd("Error : you need at least 4 arguments\n", 2));
+	fd_file[0] = open(argv[1], O_RDONLY);
+	fd_file[1] = open(argv[argc - 1], O_CREAT | O_RDWR, 0644);
+	if (fd_file[0] < 0 || fd_file[1] < 0)
 		msg_error();
-	check = dup2(fd_file1, 0);
-	protect(check);
-	check = dup2(fd_file2, 1);
-	protect(check);
-	pipe_exec(envp, argv[2], fd_file1, 1);
-	pipe_exec(envp, argv[3], 0, fd_file2);
+	pipe_exec(argc, argv, envp, fd_file);
 	return (0);
 }
