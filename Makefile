@@ -11,15 +11,17 @@
 # **************************************************************************** #
 
 NAME		=		pipex
+NAME_BONUS	=		pipex_bonus
 
 ###FILES
-##SRC			=		pipex.c 		main.c\
-					split.c			utils.c
+SRC_MANDA	=		pipex.c 			main.c\
+					split.c				utils.c
+OBJ_SRC		= 		$(SRC_MANDA:.c=.o)
 
-SRC			=		pipex_bonus.c 		main_bonus.c\
-					split_bonus.c			utils_bonus.c
-
-OBJ			= 		$(SRC:.c=.o)
+SRC_BONUS	=		pipex_bonus.c 		main_bonus.c\
+					split_bonus.c		utils_bonus.c\
+					gnl_bonus.c  		gnl_utils_bonus.c 
+OBJ_BONUS	= 		$(SRC_BONUS:.c=.o)
 
 
 ### COMMANDS
@@ -29,14 +31,20 @@ RM			=		rm -rf
 
 
 ### NAME
-$(NAME)		:		$(OBJ)
+$(NAME)		:		$(OBJ_SRC)
 	$(CC) $(FLAGS) -o $(NAME) $(OBJ)
+
+$(NAME_BONUS)		:		$(OBJ_BONUS)
+	$(CC) $(FLAGS) -o $(NAME_BONUS) $(OBJ_BONUS)
 
 
 ### RULES
 all			:		$(NAME)
+bonus 		:		$(NAME_BONUS)
 clean		:
-	$(RM) $(OBJ)
+	$(RM) $(OBJ_SRC) $(OBJ_BONUS)
 fclean		:		clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(NAME_BONUS)
 re			:		fclean all
+
+.PHONY 		: all bonus clean fclean re
